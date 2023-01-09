@@ -7,9 +7,13 @@ const router = express.Router();
 //Get All Todos
 export const getEmails = async (req, res) => { 
     try {
-        const Emails = await Email.find();
-                
-        res.status(200).json(Emails);
+        const { token } = req.body;
+        if (token===process.env.token) {            
+            const Emails = await Email.find();
+            res.status(200).json(Emails);
+        }else{
+            res.status(401).json({ message: "Not authorized" });
+        }
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
